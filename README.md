@@ -39,4 +39,4 @@ The command line interface use [Deno std](https://jsr.io/@std). It's call
 - [ ] Write workers?
 - [ ] Cleanup code
 - [ ] Add continuous integration
-- [ ] Submit to [JSR]((https://jsr.io)
+- [ ] Submit to [JSR](https://jsr.io)
