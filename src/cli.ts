@@ -135,9 +135,9 @@ async function* findLyrics(
     const lyrics = await client.get({
       artistName,
       trackName,
-      duration: Math.floor(duration),
+      duration: Math.round(duration),
     });
-    if (lyrics === null) {
+    if (lyrics === null || lyrics.instrumental) {
       continue;
     }
     yield {
