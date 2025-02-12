@@ -54,7 +54,7 @@ async function audioTags(paths: string[]): Promise<AudioTrack[]> {
   });
   const { code, stdout, success } = await cmd.output();
   if (!success) {
-    throw new Error(`ffprobe finished with the code: ${code}`);
+    throw new Error(`mediainfo finished with the code: ${code}`);
   }
   const medias: MediaInfoOutput[] = JSON.parse(
     new TextDecoder().decode(stdout),
