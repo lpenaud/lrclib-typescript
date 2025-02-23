@@ -11,10 +11,30 @@ interface AudioTrack {
 }
 
 interface MediaInfoGeneralTrack {
+  /**
+   * Track name
+   */
   Track?: string;
+
+  /**
+   * Track duration: ss.mm
+   */
   Duration: string;
+
+  /**
+   * Album name
+   */
   Album?: string;
+
+  /**
+   * Album artist
+   */
   Album_Performer?: string;
+
+  /**
+   * Album composer
+   */
+  Composer?: string;
 }
 
 interface MediaInfoOutput {
@@ -27,22 +47,27 @@ interface MediaInfoOutput {
 function validTags(
   { media: { "@ref": pathname, track: [track] } }: MediaInfoOutput,
 ): AudioTrack | null {
-  const props: Array<keyof MediaInfoGeneralTrack> = [
-    "Track",
-    "Duration",
-    "Album",
-    "Album_Performer",
+  // Composer
+  const props: Array<keyof AudioTrack> = [
+    "albumName",
+    "artistName",
+    "duration",
+    "trackName",
   ];
-  if (props.some((p) => track[p] === undefined)) {
-    return null;
-  }
-  return {
+  const result: AudioTrack = {
     albumName: track.Album as string,
-    artistName: track.Album_Performer as string,
+    artistName: track.Composer ?? track.Album_Performer as string,
     duration: parseFloat(track.Duration),
     trackName: track.Track as string,
     pathname,
   };
+  for (const key of props) {
+    if (result[key] === undefined) {
+      console.warn("Invalid media: '%s'", pathname);
+      return null;
+    }
+  }
+  return result;
 }
 
 async function audioTags(paths: string[]): Promise<AudioTrack[]> {
